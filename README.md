@@ -14,7 +14,7 @@ La base del proyecto es la plantilla oficial de plugins de OBS. MediaMTX proporc
 
 ## Procedencia y licencias
 
-El código, la interfaz, la configuración, el empaquetado y la documentación se crean en este proyecto desde la plantilla oficial de OBS. No se han trasladado código, scripts, páginas web ni instaladores de VillaCast o de la adaptación previa de LajiCast. Solo se han reutilizado los tres formatos del icono de LajiCast.
+El código, la interfaz, la configuración, el empaquetado y la documentación se crean en este proyecto desde la plantilla oficial de OBS. Solo se han reutilizado los tres formatos del icono de LajiCast.
 
 La revisión y adaptación escolar se atribuye a **ProfeCésar**. Se conserva la licencia GPL-2.0 de la plantilla oficial de OBS. El paquete incluye MediaMTX 1.21.4 y conserva su licencia MIT en `data/MEDIAMTX-LICENSE`.
 
