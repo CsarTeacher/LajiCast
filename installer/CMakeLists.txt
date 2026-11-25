@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.25)
+project(LajiCastSetup LANGUAGES CXX RC)
+
+if(NOT DEFINED LAJICAST_PAYLOAD_DIR)
+  message(FATAL_ERROR "Pass LAJICAST_PAYLOAD_DIR pointing to the installed lajicast folder.")
+endif()
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_WIN32_EXECUTABLE ON)
+
+set(PLUGIN_DLL "${LAJICAST_PAYLOAD_DIR}/lajicast.dll")
+set(MEDIAMTX_EXE "${LAJICAST_PAYLOAD_DIR}/data/mediamtx.exe")
+set(MEDIAMTX_LICENSE "${LAJICAST_PAYLOAD_DIR}/data/MEDIAMTX-LICENSE")
+set(VIEWER_HTML "${LAJICAST_PAYLOAD_DIR}/data/viewer.html")
+set(LOGO_ICO "${LAJICAST_PAYLOAD_DIR}/data/branding/lajicast.ico")
+set(LOGO_PNG "${LAJICAST_PAYLOAD_DIR}/data/branding/lajicast.png")
+set(LOGO_SVG "${LAJICAST_PAYLOAD_DIR}/data/branding/lajicast.svg")
+set(GPL_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE")
+
+foreach(payload IN ITEMS PLUGIN_DLL MEDIAMTX_EXE MEDIAMTX_LICENSE VIEWER_HTML LOGO_ICO LOGO_PNG LOGO_SVG GPL_LICENSE)
+  if(NOT EXISTS "${${payload}}")
+    message(FATAL_ERROR "Missing installer payload: ${${payload}}")
+  endif()
+endforeach()
+
+foreach(payload IN ITEMS PLUGIN_DLL MEDIAMTX_EXE MEDIAMTX_LICENSE VIEWER_HTML LOGO_ICO LOGO_PNG LOGO_SVG GPL_LICENSE)
+  file(TO_CMAKE_PATH "${${payload}}" ${payload})
+endforeach()
+
+configure_file(installer.rc.in "${CMAKE_CURRENT_BINARY_DIR}/installer.rc" @ONLY)
+add_executable(LajiCastSetup main.cpp "${CMAKE_CURRENT_BINARY_DIR}/installer.rc")
+target_link_libraries(LajiCastSetup PRIVATE shell32 ole32)
+target_link_options(LajiCastSetup PRIVATE "/MANIFEST:NO")
+target_compile_definitions(LajiCastSetup PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+set_target_properties(LajiCastSetup PROPERTIES OUTPUT_NAME "LajiCast-Setup")
